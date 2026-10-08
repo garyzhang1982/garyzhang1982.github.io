@@ -1,0 +1,580 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  background: var(--bg);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.65;
+  letter-spacing: 0.005em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  overscroll-behavior-y: none;
+  -webkit-tap-highlight-color: transparent;
+
+  /*
+   * 中文排版：浏览器默认允许在任意两个汉字之间断行（不看词边界），
+   * 会把「大概」「方向」这类双字词劈到两行。
+   * keep-all 关掉汉字之间的断行机会，只在标点处断行；
+   * overflow-wrap 兜底：遇到超长且无标点的串仍可强制断开，不会溢出。
+   * 对英文无副作用 —— 英文本来就只在空格 / 连字符处断行。
+   */
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+/* 全屏氛围光 */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(62% 40% at 10% -6%, rgba(34, 211, 238, 0.15), transparent 70%),
+    radial-gradient(58% 38% at 94% 4%, rgba(168, 85, 247, 0.17), transparent 72%),
+    radial-gradient(72% 46% at 50% 104%, rgba(99, 102, 241, 0.13), transparent 76%);
+}
+
+/* 细网格，只在顶部显现 */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.032) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.032) 1px, transparent 1px);
+  background-size: 44px 44px;
+  -webkit-mask-image: radial-gradient(78% 46% at 50% 0%, #000 0%, transparent 76%);
+  mask-image: radial-gradient(78% 46% at 50% 0%, #000 0%, transparent 76%);
+}
+
+button {
+  font-family: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+::selection {
+  background: rgba(99, 102, 241, 0.4);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 2px solid rgba(99, 102, 241, 0.75);
+  outline-offset: 2px;
+}
+
+/* ---------------- 应用外壳（移动端优先） ---------------- */
+.app {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: var(--maxw);
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin: 0 auto;
+}
+
+@media (min-width: 561px) and (max-width: 767px) {
+  /* 只在"手机宽度居中"的那一档加边框，像手机预览 */
+  .app {
+    border-left: 1px solid rgba(255, 255, 255, 0.06);
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 0 90px -34px rgba(99, 102, 241, 0.55);
+  }
+}
+
+.main {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------------- 滚动入场 ---------------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 620ms var(--ease),
+    transform 620ms var(--ease);
+}
+
+.reveal--in {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------------- 区块 ---------------- */
+.section {
+  padding: 46px var(--gutter) 10px;
+  scroll-margin-top: calc(var(--topbar-h) + 14px);
+}
+
+.section__head {
+  margin-bottom: 22px;
+}
+
+.section__body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.section__footer {
+  margin-top: 22px;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+
+.eyebrow__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--grad);
+  box-shadow: 0 0 10px rgba(99, 102, 241, 0.95);
+}
+
+.section__title {
+  margin: 10px 0 0;
+  font-size: 25px;
+  line-height: 1.3;
+  font-weight: 720;
+  letter-spacing: -0.015em;
+}
+
+.section__subtitle {
+  margin: 9px 0 0;
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--text-dim);
+}
+
+.lede {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.8;
+  color: var(--text-dim);
+}
+
+.subhead {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 26px 0 14px;
+  font-size: 15px;
+  font-weight: 650;
+  letter-spacing: -0.005em;
+}
+
+.subhead::before {
+  content: '';
+  width: 3px;
+  height: 15px;
+  border-radius: 2px;
+  background: var(--grad);
+}
+
+/* ---------------- 卡片 ---------------- */
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.card {
+  position: relative;
+  padding: 18px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.058), rgba(255, 255, 255, 0.016));
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.24), transparent);
+}
+
+.card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.card--compact .card__head {
+  justify-content: flex-start;
+  margin-bottom: 10px;
+}
+
+.card__icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--grad-soft);
+  color: var(--icon);
+}
+
+.card__num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--text-mute);
+}
+
+.card__title {
+  margin: 0 0 6px;
+  font-size: 16px;
+  font-weight: 660;
+  letter-spacing: -0.005em;
+}
+
+.card__title--inline {
+  margin: 0;
+}
+
+.card__title--sm {
+  font-size: 15px;
+}
+
+.card__summary {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.72;
+  color: var(--text-dim);
+}
+
+.cards--grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.card--why {
+  display: block;
+}
+
+.card--why .card__icon {
+  margin-bottom: 12px;
+}
+
+/* ---------------- 项目符号列表 ---------------- */
+.bullets {
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.bullets li {
+  display: flex;
+  gap: 10px;
+  font-size: 13.5px;
+  line-height: 1.68;
+  color: var(--text-dim);
+}
+
+.bullets--roomy li {
+  font-size: 14px;
+}
+
+.bullets__dot {
+  flex: none;
+  width: 5px;
+  height: 5px;
+  margin-top: 8px;
+  border-radius: 50%;
+  background: linear-gradient(120deg, var(--cyan), var(--violet));
+  box-shadow: 0 0 8px rgba(99, 102, 241, 0.85);
+}
+
+/* ---------------- 标签云 ---------------- */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chips--panel {
+  padding: 16px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 12px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-dim);
+  font-size: 12.5px;
+  line-height: 1;
+}
+
+.chip--accent {
+  border-color: rgba(99, 102, 241, 0.42);
+  background: rgba(99, 102, 241, 0.13);
+  color: #c7d2fe;
+}
+
+.chipsBlock {
+  margin-top: 18px;
+}
+
+.chipsBlock__label {
+  display: block;
+  margin-bottom: 12px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+
+/* ---------------- 引用块 ---------------- */
+.quote {
+  position: relative;
+  margin: 0;
+  padding: 20px 18px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.quote p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--text-dim);
+}
+
+.quote--def {
+  padding-left: 22px;
+  border-color: rgba(99, 102, 241, 0.28);
+  background: var(--grad-soft);
+}
+
+.quote--def::before {
+  content: '';
+  position: absolute;
+  top: 14px;
+  bottom: 14px;
+  left: 0;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--grad);
+}
+
+.quote--def p {
+  color: #cfdaf2;
+}
+
+.quote__mark {
+  position: absolute;
+  top: 0;
+  right: 12px;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 46px;
+  line-height: 1;
+  color: rgba(148, 163, 184, 0.15);
+  pointer-events: none;
+}
+
+.quote--hero {
+  padding: 26px 20px;
+  border-color: rgba(168, 85, 247, 0.28);
+  background: var(--grad-soft);
+  text-align: center;
+}
+
+.quote--hero p {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.85;
+  color: #e4eaf9;
+}
+
+/* ---------------- 按钮（antd-mobile Button 外观覆盖） ---------------- */
+.btn.adm-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 48px;
+  font-size: 14.5px;
+  font-weight: 620;
+  letter-spacing: 0.01em;
+}
+
+.btn--primary.adm-button {
+  border: 0;
+  background: var(--grad);
+  color: #ffffff;
+  box-shadow: 0 14px 32px -14px rgba(99, 102, 241, 0.9);
+}
+
+.btn--primary.adm-button:active {
+  filter: brightness(1.08);
+  transform: translateY(1px);
+}
+
+.btn--ghost.adm-button {
+  border: 1px solid var(--border-2);
+  background: rgba(255, 255, 255, 0.045);
+  color: var(--text);
+}
+
+.btn--ghost.adm-button:active {
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.btn--block.adm-button {
+  display: flex;
+  width: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ============================================================
+   宽屏布局 · 平板起（≥ 768px）
+   ============================================================ */
+@media (min-width: 768px) {
+  .section {
+    padding: 64px var(--gutter) 14px;
+  }
+
+  .section__head {
+    margin-bottom: 30px;
+  }
+
+  .section__title {
+    font-size: 30px;
+  }
+
+  .section__subtitle {
+    font-size: 14.5px;
+  }
+
+  .section__body {
+    gap: 18px;
+  }
+
+  /* 正文限制行宽，避免宽屏下一行太长 */
+  .lede,
+  .quote,
+  .fit .bullets {
+    max-width: 82ch;
+  }
+
+  .lede {
+    font-size: 15px;
+  }
+
+  .subhead {
+    margin: 32px 0 18px;
+    font-size: 16px;
+  }
+
+  /* 卡片改为两栏网格 */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .card {
+    height: 100%;
+    padding: 22px;
+  }
+
+  .card__title {
+    font-size: 17px;
+  }
+
+  .card__title--sm {
+    font-size: 16px;
+  }
+
+  .card__summary,
+  .bullets li {
+    font-size: 14px;
+  }
+
+  .chips--panel {
+    padding: 20px;
+  }
+}
+
+/* ============================================================
+   宽屏布局 · 桌面（≥ 1024px）
+   ============================================================ */
+@media (min-width: 1024px) {
+  .section {
+    padding: 80px var(--gutter) 18px;
+  }
+
+  .section__head {
+    margin-bottom: 36px;
+  }
+
+  .section__title {
+    font-size: 34px;
+  }
+
+  .eyebrow {
+    font-size: 11px;
+  }
+}

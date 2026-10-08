@@ -1,0 +1,109 @@
+:root {
+  /* ---------------- 颜色 ---------------- */
+  --bg: #05070e;
+  --bg-soft: #0a0f1c;
+  --bg-elev: #101728;
+  /* 不透明的面板底色：用于需要与边缘渐隐遮罩精确对齐的控件（如 Tabs） */
+  --bg-panel: #0b101d;
+
+  --surface: rgba(255, 255, 255, 0.038);
+  --surface-2: rgba(255, 255, 255, 0.07);
+  --border: rgba(255, 255, 255, 0.09);
+  --border-2: rgba(255, 255, 255, 0.17);
+
+  --text: #e9eefb;
+  --text-dim: #9aa8c2;
+  --text-mute: #6f7d97;
+
+  --cyan: #22d3ee;
+  --indigo: #6366f1;
+  --violet: #a855f7;
+  --mint: #34d399;
+  --icon: #93c5fd;
+
+  --grad: linear-gradient(120deg, #22d3ee 0%, #6366f1 52%, #a855f7 100%);
+  --grad-soft: linear-gradient(140deg, rgba(34, 211, 238, 0.15), rgba(168, 85, 247, 0.15));
+
+  /* ---------------- 尺寸 ---------------- */
+  --maxw: 560px;
+  --gutter: 20px;
+  --radius: 18px;
+  --radius-sm: 12px;
+  --radius-pill: 999px;
+  --topbar-h: 58px;
+
+  /* ---------------- 阴影 ---------------- */
+  --shadow: 0 14px 40px -18px rgba(0, 0, 0, 0.85);
+  --glow: 0 0 0 1px rgba(99, 102, 241, 0.22), 0 18px 52px -26px rgba(99, 102, 241, 0.8);
+
+  /* ---------------- 动效 ---------------- */
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --dur: 260ms;
+
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', 'Noto Sans SC', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+}
+
+/* ============================================================
+   断点
+   ------------------------------------------------------------
+   < 561px     手机
+   561–767px   手机（560px 居中 + 边框，像手机预览）
+   768–1023px  平板：容器 880px，卡片两栏，仍用底部导航弹层
+   ≥ 1024px    桌面宽屏：容器 1200px，顶部横向导航，首屏双栏
+   ============================================================ */
+@media (min-width: 768px) {
+  :root {
+    --maxw: 880px;
+    --gutter: 32px;
+    --radius: 20px;
+    --topbar-h: 62px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --maxw: 1200px;
+    --gutter: 40px;
+    --radius: 22px;
+    --topbar-h: 68px;
+  }
+}
+
+@media (min-width: 1440px) {
+  :root {
+    --maxw: 1280px;
+  }
+}
+
+/* ============================================================
+   antd-mobile 主题变量覆盖
+   ------------------------------------------------------------
+   官方变量定义在 :root 与 html[data-prefers-color-scheme='dark'] 上，
+   这里用同特异度的选择器 + 靠后的加载顺序把整套配色改成深色科技风。
+   ============================================================ */
+:root,
+html[data-prefers-color-scheme='dark'] {
+  --adm-color-primary: #6366f1;
+  --adm-color-success: #34d399;
+  --adm-color-warning: #fbbf24;
+  --adm-color-danger: #f87171;
+
+  --adm-color-text: #e9eefb;
+  --adm-color-text-secondary: #9aa8c2;
+  --adm-color-weak: #6f7d97;
+  --adm-color-light: #47536b;
+  --adm-color-border: rgba(255, 255, 255, 0.09);
+  --adm-color-box: rgba(255, 255, 255, 0.05);
+  --adm-color-background: #0a0f1c;
+  --adm-color-background-body: #05070e;
+  --adm-color-white: #ffffff;
+  --adm-color-text-light-solid: #ffffff;
+  --adm-color-text-dark-solid: #000000;
+  --adm-color-fill-content: rgba(255, 255, 255, 0.05);
+
+  --adm-font-family: var(--font-sans);
+  --adm-font-size-main: 15px;
+  --adm-button-border-radius: 14px;
+}

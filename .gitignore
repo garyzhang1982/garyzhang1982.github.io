@@ -1,0 +1,22 @@
+node_modules
+
+# 构建产物必须入库：GitHub Pages 从 docs/ 发布这个网站。
+# （注意不要写 "docs"，否则 Pages 就没有内容可发布了）
+# dist 是早期用过的输出目录，留在这里防止旧产物被误提交
+dist
+dist-ssr
+
+# 部署技能里有服务器地址、SSH 命令、密钥路径等基础设施信息，
+# 本仓库是公开的，因此不入库（改用 .gitignore 排除）
+.agents
+
+.pnpm-store
+.pnpm-state
+.npm-cache
+*.local
+.DS_Store
+.vite
+*.log
+.idea
+.vscode/*
+!.vscode/extensions.json
